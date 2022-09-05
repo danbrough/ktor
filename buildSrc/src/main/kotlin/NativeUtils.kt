@@ -14,7 +14,7 @@ fun Project.fastOr(block: () -> List<String>): List<String> {
 fun Project.posixTargets(): List<String> = fastOr { nixTargets() + kotlin.mingwX64().name }
 
 fun Project.nixTargets(): List<String> = fastOr {
-    darwinTargets() + kotlin.linuxX64().name
+    darwinTargets() + kotlin.linuxX64().name + kotlin.linuxArm64().name
 }
 
 fun Project.darwinTargets(): List<String> = fastOr {
