@@ -22,6 +22,8 @@ fun Project.configureJvm() {
 
     val configuredVersion: String by rootProject.extra
 
+    val coroutinesPrefix = "org.danbrough"
+
     kotlin {
         jvm()
 
@@ -48,7 +50,7 @@ fun Project.configureJvm() {
             val jvmTest by getting {
                 dependencies {
                     implementation("junit:junit:$junit_version")
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version")
+                    implementation("$coroutinesPrefix.kotlinx:kotlinx-coroutines-debug:$coroutines_version")
                     implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
                 }
             }
