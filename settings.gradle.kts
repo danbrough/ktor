@@ -4,6 +4,7 @@
 
 pluginManagement {
     repositories {
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenCentral()
         google()
         gradlePluginPortal()
@@ -11,7 +12,8 @@ pluginManagement {
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id == "kotlinx-atomicfu") {
-                useModule("org.jetbrains.kotlinx:atomicfu-gradle-plugin:${requested.version}")
+                //useModule("org.jetbrains.kotlinx:atomicfu-gradle-plugin:${requested.version}")
+                useModule("org.danbrough.kotlinx:atomicfu-gradle-plugin:${requested.version}")
             }
         }
     }
