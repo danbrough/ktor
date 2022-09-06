@@ -75,7 +75,7 @@ kotlinx-serialization-core = { module = "org.danbrough.kotlinx:kotlinx-serializa
 kotlinx-serialization-json = { module = "org.danbrough.kotlinx:kotlinx-serialization-json", version.ref = "serialization-version" }
 kotlinx-serialization-cbor = { module = "org.danbrough.kotlinx:kotlinx-serialization-cbor", version.ref = "serialization-version" }
 
-kotlinx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlinx-html-version" }
+kotlinx-html = { module = "org.danbrough.kotlinx:kotlinx-html", version.ref = "kotlinx-html-version" }
 
 netty-handler = { module = "io.netty:netty-handler", version.ref = "netty-version" }
 netty-codec-http2 = { module = "io.netty:netty-codec-http2", version.ref = "netty-version" }

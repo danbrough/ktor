@@ -46,6 +46,7 @@ buildscript {
 
     repositories {
         mavenLocal()
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenCentral()
         google()
         gradlePluginPortal()
@@ -66,7 +67,7 @@ extra["configuredVersion"] = when {
 
 println("The build version is ${extra["configuredVersion"]}")
 
-extra["globalM2"] = "$buildDir/m2"
+extra["globalM2"] = buildDir.resolve("mvn").absolutePath
 extra["publishLocal"] = project.hasProperty("publishLocal")
 
 val configuredVersion: String by extra
@@ -98,7 +99,7 @@ plugins {
 }
 
 allprojects {
-    group = "io.ktor"
+    group = "org.danbrough.ktor"
     version = configuredVersion
     extra["hostManager"] = HostManager()
 
@@ -106,6 +107,7 @@ allprojects {
 
     repositories {
         mavenLocal()
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenCentral()
         maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
         maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
