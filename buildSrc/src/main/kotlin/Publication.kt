@@ -26,7 +26,7 @@ fun isAvailableForPublication(publication: Publication): Boolean {
         "kotlinMultiplatform"
     )
     result = result || name in jvmAndCommon
-    val linuxPublications = setOf("linuxX64","linuxArm64")
+    val linuxPublications = setOf("linuxX64","linuxArm64","linuxArm32Hfp")
     result = result || (HOST_NAME == "linux" && name in linuxPublications)
     result = result || (HOST_NAME == "windows" && name == "mingwX64")
     val macPublications = setOf(
@@ -162,31 +162,14 @@ fun Project.configurePublication() {
     val publishToMavenLocal = tasks.getByName("publishToMavenLocal")
     tasks.getByName("publish").dependsOn(publishToMavenLocal)
 
-    val signingKey = System.getenv("SIGN_KEY_ID")
-    val signingKeyPassphrase = System.getenv("SIGN_KEY_PASSPHRASE")
-
-    if (signingKey != null && signingKey != "") {
-        extra["signing.gnupg.keyName"] = signingKey
-        extra["signing.gnupg.passphrase"] = signingKeyPassphrase
 
         apply(plugin = "signing")
 
         the<SigningExtension>().apply {
-            useGpgCmd()
+           // useGpgCmd()
 
             sign(the<PublishingExtension>().publications)
         }
 
-        val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
 
-        tasks.withType<Sign> {
-            doFirst {
-                gpgAgentLock.lock()
-            }
-
-            doLast {
-                gpgAgentLock.unlock()
-            }
-        }
-    }
 }

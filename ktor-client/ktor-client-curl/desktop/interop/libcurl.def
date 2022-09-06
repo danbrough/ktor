@@ -30,11 +30,21 @@ linkerOpts.linux =           -lcurl \
                              -L/usr/local/opt/curl/lib \
                              -L/opt/homebrew/opt/curl/lib
 
-compilerOpts.linux_arm64 = -I/home/dan/workspace/kipfs/openssl/lib/linuxArm64/include -I /home/dan/workspace/kipfs/curl/lib/linuxArm64/include
+compilerOpts.linux_arm64 = -I/home/dan/workspace/kipfs/openssl/lib/linuxArm64/include  \
+    -I /home/dan/workspace/kipfs/curl/lib/linuxArm64/include
 
-linkerOpts.linux_arm64 =           -lcurl \
+compilerOpts.linux_arm32_hfp = -I/home/dan/workspace/kipfs/openssl/lib/linuxArm32Hfp/include  \
+    -I /home/dan/workspace/kipfs/curl/lib/linuxArm32Hfp/include
+
+linkerOpts.linux_arm64 = -lcurl \
+    -L/usr/lib/aarch64-linux-gnu/\
     -L/home/dan/workspace/kipfs/curl/lib/linuxArm64/lib \
     -L/home/dan/workspace/kipfs/openssl/lib/linuxArm64/lib
+
+linkerOpts.linux_arm32_hfp = -lcurl \
+    -L/usr/lib/arm-linux-gnueabihf \
+    -L/home/dan/workspace/kipfs/curl/lib/linuxArm32Hfp/lib \
+    -L/home/dan/workspace/kipfs/openssl/lib/linuxArm32Hfp/lib
 
 compilerOpts.linux =         -I/usr/include/curl \
                              -I/usr/include/x86_64-linux-gnu/curl \
