@@ -26,22 +26,19 @@ compilerOpts.osx =           -I//\
 
 linkerOpts.linux =           -lcurl
 
-compilerOpts.linux_arm64 = -I/opt/kotlinxtras/libs/openssl/lib/linuxArm64/include  \
-    -I /opt/kotlinxtras/libs/curl/lib/linuxArm64/include
+compilerOpts.linux_arm64 = -I../../libs/openssl/dan_OpenSSL_1_1_1q/lib/linuxArm64/include  \
+    -I ../../../../libs/curl/curl-7_85_0/lib/linuxArm64/include
 
-compilerOpts.linux_arm32_hfp = -I/home/dan/workspace/kipfs/openssl/lib/linuxArm32Hfp/include  \
-    -I /opt/kotlinxtras/libs/kipfs/curl/lib/linuxArm32Hfp/include
+compilerOpts.linux_arm32_hfp = -I../../libs/openssl/dan_OpenSSL_1_1_1q/lib/linuxArm32Hfp/include  \
+    -I ../../../../libs/curl/curl-7_85_0/lib/linuxArm32Hfp/include
 
 linkerOpts.linux_arm64 = -lcurl \
-    /opt/kotlinxtras/libs/openssl/OpenSSL_1_1_1q/linuxArm64/lib\
-    -L/usr/lib/aarch64-linux-gnu/ \
-    -L/home/dan/workspace/kipfs/curl/lib/linuxArm64/lib \
-    -L/home/dan/workspace/kipfs/openssl/lib/linuxArm64/lib
+    ../../../../libs/openssl/OpenSSL_1_1_1q/linuxArm64/lib\
+    -L/usr/lib/aarch64-linux-gnu/
 
 linkerOpts.linux_arm32_hfp = -lcurl \
-    -L/usr/lib/arm-linux-gnueabihf \
-    -L/home/dan/workspace/kipfs/curl/lib/linuxArm32Hfp/lib \
-    -L/home/dan/workspace/kipfs/openssl/lib/linuxArm32Hfp/lib
+    ../../../../libs/openssl/OpenSSL_1_1_1q/linuxArm32Hfp/lib\
+    -L/usr/lib/arm-linux-gnueabihf
 
 compilerOpts.linux =         -I/usr/include/curl \
                              -I/usr/include/x86_64-linux-gnu/curl \

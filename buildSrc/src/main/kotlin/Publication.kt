@@ -96,8 +96,8 @@ fun Project.configurePublication() {
                 }
             }
             maven {
-                name = "testLocal"
-                setUrl("$rootProject.buildDir/m2")
+                name = "m2"
+                setUrl(rootProject.file("../../build/m2"))
             }
         }
 
@@ -163,13 +163,14 @@ fun Project.configurePublication() {
     tasks.getByName("publish").dependsOn(publishToMavenLocal)
 
 
-        apply(plugin = "signing")
+      if (project.hasProperty("signPublications")) {
+          apply(plugin = "signing")
 
-        the<SigningExtension>().apply {
-           // useGpgCmd()
+          the<SigningExtension>().apply {
+              // useGpgCmd()
 
-            sign(the<PublishingExtension>().publications)
-        }
-
+              sign(the<PublishingExtension>().publications)
+          }
+      }
 
 }
