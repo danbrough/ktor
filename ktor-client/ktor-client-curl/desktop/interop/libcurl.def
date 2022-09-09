@@ -32,13 +32,15 @@ compilerOpts.linux_arm64 = -I../../libs/openssl/dan_OpenSSL_1_1_1q/lib/linuxArm6
 compilerOpts.linux_arm32_hfp = -I../../libs/openssl/dan_OpenSSL_1_1_1q/lib/linuxArm32Hfp/include  \
     -I ../../../../libs/curl/curl-7_85_0/lib/linuxArm32Hfp/include
 
-linkerOpts.linux_arm64 = -lcurl \
-    ../../../../libs/openssl/OpenSSL_1_1_1q/linuxArm64/lib\
-    -L/usr/lib/aarch64-linux-gnu/
+linkerOpts.linux_arm64 =  -lssl -lcrypto -lcurl \
+    -L/usr/lib/aarch64-linux-gnu/ \
+    -L/usr/local/kotlinxtras/libs/curl/curl-7_85_0/linuxArm64/lib
 
-linkerOpts.linux_arm32_hfp = -lcurl \
-    ../../../../libs/openssl/OpenSSL_1_1_1q/linuxArm32Hfp/lib\
-    -L/usr/lib/arm-linux-gnueabihf
+linkerOpts.linux_arm32_hfp = -lssl -lcrypto -lcurl \
+    -L/usr/lib/arm-linux-gnueabihf  \
+    -L/usr/local/kotlinxtras/libs/openssl/dan_OpenSSL_1_1_1q/linuxArm32Hfp/lib \
+    -L/usr/local/kotlinxtras/libs/curl/curl-7_85_0/linuxArm32Hfp/lib
+
 
 compilerOpts.linux =         -I/usr/include/curl \
                              -I/usr/include/x86_64-linux-gnu/curl \
