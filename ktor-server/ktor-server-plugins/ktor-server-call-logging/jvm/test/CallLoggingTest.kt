@@ -5,11 +5,13 @@
 package io.ktor.server.plugins.callloging
 
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.callid.*
+import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -300,6 +302,34 @@ class CallLoggingTest {
     }
 
     @Test
+    fun `will setup mdc provider and use in status pages plugin`() = testApplication {
+        environment {
+            module {
+                install(CallLogging) {
+                    mdc("mdc-uri") { it.request.uri }
+                }
+                install(StatusPages) {
+                    exception<Throwable> { call, _ ->
+                        call.application.log.info("test message")
+                        call.respond("OK")
+                    }
+                }
+            }
+            log = logger
+        }
+        application {
+            routing {
+                get("/*") {
+                    throw Exception()
+                }
+            }
+        }
+
+        client.get("/uri1")
+        assertTrue { "INFO: test message [mdc-uri=/uri1]" in messages }
+    }
+
+    @Test
     fun `can configure custom logger`() {
         val customMessages = ArrayList<String>()
         val customLogger: Logger = object : Logger by LoggerFactory.getLogger("ktor.test.custom") {
@@ -340,6 +370,32 @@ class CallLoggingTest {
         createClient { expectSuccess = false }.get("/")
 
         assertTrue("INFO: 404 Not Found: GET - /" in messages)
+    }
+
+    @Test
+    fun `mdc exception does not crash request`() = testApplication {
+        var failed = 0
+        install(CallLogging) {
+            mdc("bar") {
+                failed++
+                throw Exception()
+            }
+            mdc("foo") { "Hello" }
+        }
+
+        routing {
+            get {
+                call.respond("OK")
+            }
+        }
+
+        assertEquals(0, failed)
+
+        assertEquals("OK", client.get("/").bodyAsText())
+        assertEquals(3, failed)
+
+        assertEquals("OK", client.get("/").bodyAsText())
+        assertEquals(6, failed)
     }
 
     private fun green(value: Any): String = colored(value, Ansi.Color.GREEN)

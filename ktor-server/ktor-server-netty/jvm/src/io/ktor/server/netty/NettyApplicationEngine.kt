@@ -122,13 +122,14 @@ public class NettyApplicationEngine(
      * [EventLoopGroupProxy] for processing incoming requests and doing engine's internal work
      */
     private val workerEventGroup: EventLoopGroup by lazy {
-        val defaultGroup = if (configuration.shareWorkGroup) {
+        customBootstrap.config().childGroup()?.let {
+            return@lazy it
+        }
+        if (configuration.shareWorkGroup) {
             EventLoopGroupProxy.create(configuration.workerGroupSize + configuration.callGroupSize)
         } else {
             EventLoopGroupProxy.create(configuration.workerGroupSize)
         }
-
-        customBootstrap.config().childGroup() ?: defaultGroup
     }
 
     private val customBootstrap: ServerBootstrap by lazy {
@@ -271,8 +272,10 @@ public class NettyApplicationEngine(
  * Transparently allows for the creation of [EventLoopGroup]'s utilising the optimal implementation for
  * a given operating system, subject to availability, or falling back to [NioEventLoopGroup] if none is available.
  */
-public class EventLoopGroupProxy(public val channel: KClass<out ServerSocketChannel>, group: EventLoopGroup) :
-    EventLoopGroup by group {
+public class EventLoopGroupProxy(
+    public val channel: KClass<out ServerSocketChannel>,
+    group: EventLoopGroup
+) : EventLoopGroup by group {
 
     public companion object {
 
