@@ -17,5 +17,5 @@ if [ "$(uname)" = "Darwin" ]; then
   exit 0
 fi
 
-./gradlew -PsignPublications  publishAllPublicationsToMavenRepository
+./gradlew -PsignPublications  publishAllPublicationsToSonaTypeRepository
 

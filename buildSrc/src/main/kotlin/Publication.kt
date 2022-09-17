@@ -85,15 +85,14 @@ fun Project.configurePublication() {
     the<PublishingExtension>().apply {
         repositories {
             maven {
-                if (publishLocal) {
-                    setUrl(globalM2)
-                } else {
-                    publishingUrl?.let { setUrl(it) }
-                    credentials {
-                        username = publishingUser
-                        password = publishingPassword
-                    }
+
+                name = "SonaType"
+                setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = publishingUser
+                    password = publishingPassword
                 }
+
             }
             maven {
                 name = "m2"
