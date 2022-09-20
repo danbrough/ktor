@@ -13,7 +13,7 @@ fi
 if [ "$(uname)" = "Darwin" ]; then
   #need JAVA_HOME to be set
   export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/
-  ./gradlew -PsignPublications `cat mac_targets.txt`
+  ./gradlew -PsignPublications `cat mac_targets.txt | sed -e '/^#/d'`
   exit 0
 fi
 
