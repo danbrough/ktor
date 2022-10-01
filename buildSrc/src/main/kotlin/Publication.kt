@@ -11,6 +11,8 @@ import org.gradle.kotlin.dsl.*
 import org.gradle.plugins.signing.*
 import java.util.concurrent.locks.ReentrantLock
 
+val linuxPublications = setOf("linuxX64","linuxArm64","linuxArm32Hfp")
+
 fun isAvailableForPublication(publication: Publication): Boolean {
     val name = publication.name
     if (name == "maven") return true
@@ -26,7 +28,7 @@ fun isAvailableForPublication(publication: Publication): Boolean {
         "kotlinMultiplatform"
     )
     result = result || name in jvmAndCommon
-    result = result || (HOST_NAME == "linux" && name == "linuxX64")
+    result = result || (HOST_NAME == "linux" && name in linuxPublications)
     result = result || (HOST_NAME == "windows" && name == "mingwX64")
     val macPublications = setOf(
         "iosX64",

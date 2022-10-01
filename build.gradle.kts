@@ -45,7 +45,7 @@ buildscript {
     extra["native_targets_enabled"] = rootProject.properties["disable_native_targets"] == null
 
     repositories {
-	maven("https://s01.oss.sonatype.org/content/groups/staging")
+	    maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenLocal()
         mavenCentral()
         google()
@@ -67,7 +67,7 @@ extra["configuredVersion"] = when {
 
 println("The build version is ${extra["configuredVersion"]}")
 
-extra["globalM2"] = "$buildDir/m2"
+extra["globalM2"] = "$buildDir/../../../build/m2/"
 extra["publishLocal"] = project.hasProperty("publishLocal")
 
 val configuredVersion: String by extra
@@ -99,13 +99,14 @@ plugins {
 }
 
 allprojects {
-    group = "io.ktor"
+    group = "org.danbrough.ktor"
     version = configuredVersion
     extra["hostManager"] = HostManager()
 
     setupTrainForSubproject()
 
     repositories {
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenLocal()
         mavenCentral()
         maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
