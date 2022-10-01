@@ -45,6 +45,7 @@ buildscript {
     extra["native_targets_enabled"] = rootProject.properties["disable_native_targets"] == null
 
     repositories {
+	maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenLocal()
         mavenCentral()
         google()

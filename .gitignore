@@ -39,3 +39,5 @@ hs_err_pid*.log
 
 gradle-user-home
 
+.idea
+.github
