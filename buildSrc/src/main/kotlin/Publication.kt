@@ -162,33 +162,15 @@ fun Project.configurePublication() {
 
     val publishToMavenLocal = tasks.getByName("publishToMavenLocal")
     tasks.getByName("publish").dependsOn(publishToMavenLocal)
+    if (project.hasProperty("signPublications")) {
+          apply(plugin = "signing")
 
-    val signingKey = System.getenv("SIGN_KEY_ID")
-    val signingKeyPassphrase = System.getenv("SIGN_KEY_PASSPHRASE")
-     if (project.hasProperty("signPublications")) {
-         if (signingKey != null && signingKey != "") {
-             extra["signing.gnupg.keyName"] = signingKey
-             extra["signing.gnupg.passphrase"] = signingKeyPassphrase
+          the<SigningExtension>().apply {
+              // useGpgCmd()
 
-             apply(plugin = "signing")
+              sign(the<PublishingExtension>().publications)
+          }
+      }
 
-             the<SigningExtension>().apply {
-                 //useGpgCmd()
 
-                 sign(the<PublishingExtension>().publications)
-             }
-
-             val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
-
-             tasks.withType<Sign> {
-                 doFirst {
-                     gpgAgentLock.lock()
-                 }
-
-                 doLast {
-                     gpgAgentLock.unlock()
-                 }
-             }
-         }
-     }
 }
