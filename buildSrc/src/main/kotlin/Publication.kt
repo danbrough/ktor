@@ -69,7 +69,6 @@ fun Project.configurePublication() {
 
     val repositoryId: String? = System.getenv("REPOSITORY_ID")
     val publishingUrl: String? = if (repositoryId?.isNotBlank() == true) {
-        println("Set publishing to repository $repositoryId")
         "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
     } else {
         System.getenv("PUBLISHING_URL")
