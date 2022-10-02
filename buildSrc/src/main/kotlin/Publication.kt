@@ -70,7 +70,7 @@ fun Project.configurePublication() {
     val repositoryId: String? = System.getenv("REPOSITORY_ID")
     val publishingUrl: String? = if (repositoryId?.isNotBlank() == true) {
         println("Set publishing to repository $repositoryId")
-        "https://oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
+        "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
     } else {
         System.getenv("PUBLISHING_URL")
     }
@@ -97,8 +97,8 @@ fun Project.configurePublication() {
                 }
             }
             maven {
-                name = "testLocal"
-                setUrl("$rootProject.buildDir/m2")
+                name = "M2"
+                setUrl(rootProject.buildDir.resolve("../../../build/m2"))
             }
         }
 
@@ -165,29 +165,30 @@ fun Project.configurePublication() {
 
     val signingKey = System.getenv("SIGN_KEY_ID")
     val signingKeyPassphrase = System.getenv("SIGN_KEY_PASSPHRASE")
+     if (project.hasProperty("signPublications")) {
+         if (signingKey != null && signingKey != "") {
+             extra["signing.gnupg.keyName"] = signingKey
+             extra["signing.gnupg.passphrase"] = signingKeyPassphrase
 
-    if (signingKey != null && signingKey != "") {
-        extra["signing.gnupg.keyName"] = signingKey
-        extra["signing.gnupg.passphrase"] = signingKeyPassphrase
+             apply(plugin = "signing")
 
-        apply(plugin = "signing")
+             the<SigningExtension>().apply {
+                 //useGpgCmd()
 
-        the<SigningExtension>().apply {
-            useGpgCmd()
+                 sign(the<PublishingExtension>().publications)
+             }
 
-            sign(the<PublishingExtension>().publications)
-        }
+             val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
 
-        val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
+             tasks.withType<Sign> {
+                 doFirst {
+                     gpgAgentLock.lock()
+                 }
 
-        tasks.withType<Sign> {
-            doFirst {
-                gpgAgentLock.lock()
-            }
-
-            doLast {
-                gpgAgentLock.unlock()
-            }
-        }
-    }
+                 doLast {
+                     gpgAgentLock.unlock()
+                 }
+             }
+         }
+     }
 }
