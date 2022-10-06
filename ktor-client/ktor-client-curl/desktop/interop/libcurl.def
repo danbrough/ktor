@@ -1,6 +1,6 @@
 package = libcurl
-
-headers = curl/curl.h
+headers = curl.h
+headersFilter = *
 linkerOpts =  -lz -lssl -lcrypto -lcurl
 
 linkerOpts.linux =      -lssl -lcrypto -lcurl
@@ -38,8 +38,8 @@ compilerOpts.linux_arm32_hfp = -I/usr/local/kotlinxtras/libs/openssl/lib/linuxAr
     -I build/kotlinxtras/openssl/linuxArm32Hfp/include
 
 compilerOpts.linux_x64 = -I/usr/local/kotlinxtras/libs/openssl/lib/linuxX64/include  \
-    -I /usr/local/kotlinxtras/libs/curl/lib/linuxX64/include \
-    -I build/kotlinxtras/curl/linuxX64/include \
+    -I /usr/local/kotlinxtras/libs/curl/lib/linuxX64/include/curl \
+    -I build/kotlinxtras/curl/linuxX64/include/curl \
     -I build/kotlinxtras/openssl/linuxX64/include
 
 compilerOpts.android_x86 = -I/usr/local/kotlinxtras/libs/openssl/lib/androidNativeX86/include  \
