@@ -1,32 +1,31 @@
 package = libcurl
-headers = curl.h
-headerFilter = *
 
+headers = curl/curl.h
+linkerOpts =  -lz -lssl -lcrypto -lcurl
 
 linkerOpts.linux =      -lssl -lcrypto -lcurl
 linkerOpts.android =      -lssl -lcrypto -lcurl
 linkerOpts.macos  =      -lssl -lcrypto -lcurl
 
-compilerOpts.macos_arm64 = -I/usr/local/kotlinxtras/libs/openssl/lib/macosArm64/include  \
-    -I /usr/local/kotlinxtras/libs/curl/lib/macosArm64/include \
-    -I build/kotlinxtras/curl/macosArm64/include \
-    -I build/kotlinxtras/openssl/macosArm64/include
+compilerOpts.macos_arm64 = -Ibuild/kotlinxtras/curl/macosArm64/include \
+	-I/usr/local/kotlinxtras/libs/curl/macosArm64/include  \
+	-Ibuild/kotlinxtras/openssl/macosArm64/include \
+    	-I/usr/local/kotlinxtras/libs/openssl/macosArm64/include  \
 
-linkerOpts.macos_arm64 = -L/usr/local/kotlinxtras/libs/openssl/macosArm64/lib \
-    -L/usr/local/kotlinxtras/libs/curl/macosArm64/lib \
-    -Lbuild/kotlinxtras/curl/macosArm64/lib \
-    -Lbuild/kotlinxtras/openssl/macosArm64/lib
+linkerOpts.macos_arm64 = -Lbuild/kotlinxtras/curl/macosArm64/lib \
+	-L/usr/local/kotlinxtras/libs/curl/macosArm64/lib  \
+	-Lbuild/kotlinxtras/openssl/macosArm64/lib \
+    	-L/usr/local/kotlinxtras/libs/curl/openssl/lib
 
+libraryPaths.macos_arm64 = build/kotlinxtras/curl/macosArm64/lib \
+	/usr/local/kotlinxtras/libs/curl/macosArm64/lib \
+	build/kotlinxtras/openssl/macosArm64/lib \
+    	/usr/local/kotlinxtras/libs/openssl/macosArm64/lib
 
-compilerOpts.macos_x64 = -I/usr/local/kotlinxtras/libs/openssl/lib/macosX64/include  \
-    -I /usr/local/kotlinxtras/libs/curl/lib/macosX64/include \
-    -I build/kotlinxtras/curl/macosX64/include \
-    -I build/kotlinxtras/openssl/macosX64/include
-
-linkerOpts.macos_x64 = -L/usr/local/kotlinxtras/libs/openssl/macosX64/lib \
-    -L/usr/local/kotlinxtras/libs/curl/macosX64/lib \
-    -Lbuild/kotlinxtras/curl/macosX64/lib \
-    -Lbuild/kotlinxtras/openssl/macosX64/lib
+compilerOpts.macos_x64 = -Ibuild/kotlinxtras/curl/macosX64/include \
+	-I/usr/local/kotlinxtras/libs/curl/macosX64/include \
+	-Ibuild/kotlinxtras/openssl/macosX64/include \
+    	-I/usr/local/kotlinxtras/libs/openssl/macosX64/include
 
 compilerOpts.linux_arm64 = -I/usr/local/kotlinxtras/libs/openssl/lib/linuxArm64/include  \
     -I /usr/local/kotlinxtras/libs/curl/lib/linuxArm64/include \
