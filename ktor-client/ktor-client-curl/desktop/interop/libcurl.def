@@ -1,28 +1,7 @@
 package = libcurl
-headers = curl/curl.h
+headers = curl.h
 headerFilter = *
 
-linkerOpts.osx =             -lcurl \
-                             -L/usr/lib64 \
-                             -L/usr/lib/x86_64-linux-gnu \
-                             -L/opt/local/lib \
-                             -L/usr/local/opt/curl/lib \
-                             -L/opt/homebrew/opt/curl/lib
-
-compilerOpts.osx =           -I//\
-                             -I/opt/local/include/curl \
-                             -I/usr/bin/curl \
-                             -I/usr/local/include/curl \
-                             -I/usr/include/curl \
-                             -I/usr/local/Cellar/curl/7.83.1/include/curl \
-                             -I/usr/local/Cellar/curl/7.81.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.80.0_1/include/curl \
-                             -I/usr/local/Cellar/curl/7.80.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.62.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.63.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.65.3/include/curl \
-                             -I/usr/local/Cellar/curl/7.66.0/include/curl \
-                             -I/opt/homebrew/opt/curl/include/curl
 
 linkerOpts.linux =      -lssl -lcrypto -lcurl
 linkerOpts.android =      -lssl -lcrypto -lcurl
