@@ -35,15 +35,15 @@ plugins {
 
 kotlin {
     fastTarget()
-    createCInterop("libcurl", listOf("macosX64", "linuxX64","linuxArm64" ,"linuxArm32Hfp","mingwX64")) {
+    createCInterop("libcurl", listOf("macosX64", "macosArm64","linuxX64","linuxArm64" ,"linuxArm32Hfp","mingwX64")) {
         defFile = File(projectDir, "desktop/interop/libcurl.def")
         includeDirs.headerFilterOnly(paths)
     }
 
-    createCInterop("libcurl", listOf("macosArm64")) {
-        defFile = File(projectDir, "desktop/interop/libcurl_arm64.def")
-        includeDirs.headerFilterOnly(paths)
-    }
+//    createCInterop("libcurl", listOf("macosArm64")) {
+//        defFile = File(projectDir, "desktop/interop/libcurl_arm64.def")
+//        includeDirs.headerFilterOnly(paths)
+//    }
 
     sourceSets {
         desktopMain {
