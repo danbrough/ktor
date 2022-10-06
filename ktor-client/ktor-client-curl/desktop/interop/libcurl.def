@@ -28,47 +28,47 @@ linkerOpts.linux =      -lssl -lcrypto -lcurl
 linkerOpts.android =      -lssl -lcrypto -lcurl
 linkerOpts.macos  =      -lssl -lcrypto -lcurl
 
-compilerOpts.macos_arm64 = -I../../libs/openssl/lib/macosArm64/include  \
+compilerOpts.macos_arm64 = -I../../../../libs/openssl/lib/macosArm64/include  \
     -I ../../../../libs/curl/lib/macosArm64/include \
     -I build/kotlinxtras/curl/macosArm64/include \
     -I build/kotlinxtras/openssl/macosArm64/include
 
-compilerOpts.macos_x64 = -I../../libs/openssl/lib/macosX64/include  \
+compilerOpts.macos_x64 = -I../../../../libs/openssl/lib/macosX64/include  \
     -I ../../../../libs/curl/lib/macosX64/include \
     -I build/kotlinxtras/curl/macosX64/include \
     -I build/kotlinxtras/openssl/macosX64/include
 
-compilerOpts.linux_arm64 = -I../../libs/openssl/lib/linuxArm64/include  \
+compilerOpts.linux_arm64 = -I../../../../libs/openssl/lib/linuxArm64/include  \
     -I ../../../../libs/curl/lib/linuxArm64/include \
     -I build/kotlinxtras/curl/linuxArm64/include \
     -I build/kotlinxtras/openssl/linuxArm64/include
 
-compilerOpts.linux_arm32_hfp = -I../../libs/openssl/lib/linuxArm32Hfp/include  \
+compilerOpts.linux_arm32_hfp = -I../../../../libs/openssl/lib/linuxArm32Hfp/include  \
     -I ../../../../libs/curl/lib/linuxArm32Hfp/include \
     -I build/kotlinxtras/curl/linuxArm32Hfp/include \
     -I build/kotlinxtras/openssl/linuxArm32Hfp/include
 
-compilerOpts.linux_x64 = -I../../libs/openssl/lib/linuxX64/include  \
+compilerOpts.linux_x64 = -I../../../../libs/openssl/lib/linuxX64/include  \
     -I ../../../../libs/curl/lib/linuxX64/include \
     -I build/kotlinxtras/curl/linuxX64/include \
     -I build/kotlinxtras/openssl/linuxX64/include
 
-compilerOpts.android_x86 = -I../../libs/openssl/lib/androidNativeX86/include  \
+compilerOpts.android_x86 = -I../../../../libs/openssl/lib/androidNativeX86/include  \
     -I ../../../../libs/curl/lib/androidNativeX86/include \
     -I build/kotlinxtras/curl/androidNativeX86/include \
     -I build/kotlinxtras/openssl/androidNativeX86/include
 
-compilerOpts.android_x64 = -I../../libs/openssl/lib/androidNativeX64/include  \
+compilerOpts.android_x64 = -I../../../../libs/openssl/lib/androidNativeX64/include  \
     -I ../../../../libs/curl/lib/androidNativeX64/include \
     -I build/kotlinxtras/curl/androidNativeX64/include \
     -I build/kotlinxtras/openssl/androidNativeX64/include
 
-compilerOpts.android_arm32 = -I../../libs/openssl/lib/androidNativeArm32/include  \
+compilerOpts.android_arm32 = -I../../../../libs/openssl/lib/androidNativeArm32/include  \
     -I ../../../../libs/curl/lib/androidNativeArm32/include \
     -I build/kotlinxtras/curl/androidNativeArm32/include \
     -I build/kotlinxtras/openssl/androidNativeArm32/include
 
-compilerOpts.android_arm64 = -I../../libs/openssl/lib/androidNativeArm64/include  \
+compilerOpts.android_arm64 = -I../../../../libs/openssl/lib/androidNativeArm64/include  \
     -I ../../../../libs/curl/lib/androidNativeArm64/include \
     -I build/kotlinxtras/curl/androidNativeArm64/include \
     -I build/kotlinxtras/openssl/androidNativeArm64/include
