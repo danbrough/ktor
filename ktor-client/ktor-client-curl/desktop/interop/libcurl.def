@@ -1,5 +1,5 @@
 package = libcurl
-headers = curl.h
+headers = curl/curl.h
 headerFilter = *
 
 linkerOpts.osx =             -lcurl \
