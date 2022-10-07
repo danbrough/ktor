@@ -99,11 +99,21 @@ tasks.register(generateInteropsDefTaskName) {
             kotlin.targets.withType<KotlinNativeTarget>().forEach {
                 val konanTarget = it.konanTarget
                 output.println("compilerOpts.${konanTarget.name} = -Ibuild/kotlinxtras/curl/${konanTarget.platformName}/include/curl \\")
-                output.println("\t-I/usr/local/kotlinxtras/libs/curl/${konanTarget.platformName}/include/curl ")
+                output.println("\t-Ibuild/kotlinxtras/openssl/${konanTarget.platformName}/include/ \\")
+                output.println("\t-I/usr/local/kotlinxtras/libs/curl/${konanTarget.platformName}/include/curl \\")
+                output.println("\t-I/usr/local/kotlinxtras/libs/openssl/${konanTarget.platformName}/include/ ")
+
                 output.println("linkerOpts.${konanTarget.name} = -Lbuild/kotlinxtras/curl/${konanTarget.platformName}/lib \\")
-                output.println("\t-L/usr/local/kotlinxtras/libs/curl/${konanTarget.platformName}/lib ")
+                output.println("\t-Lbuild/kotlinxtras/openssl/${konanTarget.platformName}/lib \\")
+                output.println("\t-L/usr/local/kotlinxtras/libs/curl/${konanTarget.platformName}/lib \\")
+                output.println("\t-L/usr/local/kotlinxtras/libs/openssl/${konanTarget.platformName}/lib ")
+
                 output.println("libraryPaths.${konanTarget.name} = build/kotlinxtras/curl/${konanTarget.platformName}/lib \\")
-                output.println("\t/usr/local/kotlinxtras/libs/curl/${konanTarget.platformName}/lib ")
+                output.println("\tbuild/kotlinxtras/openssl/${konanTarget.platformName}/lib \\")
+                output.println("\t/usr/local/kotlinxtras/libs/curl/${konanTarget.platformName}/lib \\")
+                output.println("\t/usr/local/kotlinxtras/libs/openssl/${konanTarget.platformName}/lib ")
+                output.println()
+
             }
         }
     }
