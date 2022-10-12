@@ -67,7 +67,7 @@ extra["configuredVersion"] = when {
 
 println("The build version is ${extra["configuredVersion"]}")
 
-extra["globalM2"] = "$buildDir/../../../build/m2/"
+extra["globalM2"] = "/usr/local/kotlinxtras/build/m2/"
 extra["publishLocal"] = project.hasProperty("publishLocal")
 
 val configuredVersion: String by extra
