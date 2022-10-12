@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.targets.native.tasks.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.KonanTarget
@@ -122,6 +123,6 @@ tasks.register(generateInteropsDefTaskName) {
 
 
 
-tasks.withType<KotlinNativeCompile>().all {
+tasks.withType<CInteropProcess>().all {
     dependsOn(generateInteropsDefTaskName)
 }
