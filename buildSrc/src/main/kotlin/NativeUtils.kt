@@ -71,6 +71,7 @@ fun Project.desktopTargets(): List<String> = fastOr {
             linuxX64(),
             linuxArm64(),
             linuxArm32Hfp(),
+          //  androidNativeArm32(),
             mingwX64()
         ).map { it.name }
     }
