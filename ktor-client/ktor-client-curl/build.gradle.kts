@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.targets.native.tasks.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.konan.target.Family
 import org.jetbrains.kotlin.konan.target.KonanTarget
 
@@ -39,7 +40,7 @@ plugins {
 
 kotlin {
     fastTarget()
-    createCInterop("libcurl", listOf("macosX64", "macosArm64","linuxX64","linuxArm64" ,"linuxArm32Hfp","mingwX64")) {
+    createCInterop("libcurl", desktopTargets()) {
         defFile = File(projectDir, "desktop/interop/libcurl.def")
         //includeDirs.headerFilterOnly(paths)
     }
@@ -117,4 +118,10 @@ tasks.register(generateInteropsDefTaskName) {
             }
         }
     }
+}
+
+
+
+tasks.withType<KotlinNativeCompile>().all {
+    dependsOn(generateInteropsDefTaskName)
 }
