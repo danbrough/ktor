@@ -1,49 +1,87 @@
 package = libcurl
 headers = curl.h
-headerFilter = *
+headersFilter = *
+linkerOpts =  -lz -lssl -lcrypto -lcurl
 
-linkerOpts.osx =             -lcurl \
-                             -L/usr/lib64 \
-                             -L/usr/lib/x86_64-linux-gnu \
-                             -L/opt/local/lib \
-                             -L/usr/local/opt/curl/lib \
-                             -L/opt/homebrew/opt/curl/lib
+linkerOpts.linux =      -lssl -lcrypto -lcurl
+linkerOpts.android =      -lssl -lcrypto -lcurl
+linkerOpts.macos  =      -lssl -lcrypto -lcurl
 
-compilerOpts.osx =           -I/opt/local/include/curl \
-                             -I/usr/bin/curl \
-                             -I/usr/local/include/curl \
-                             -I/usr/include/curl \
-                             -I/usr/local/Cellar/curl/7.83.1/include/curl \
-                             -I/usr/local/Cellar/curl/7.81.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.80.0_1/include/curl \
-                             -I/usr/local/Cellar/curl/7.80.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.62.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.63.0/include/curl \
-                             -I/usr/local/Cellar/curl/7.65.3/include/curl \
-                             -I/usr/local/Cellar/curl/7.66.0/include/curl \
-                             -I/opt/homebrew/opt/curl/include/curl
+compilerOpts.linux_arm32_hfp = -Ibuild/kotlinxtras/curl/linuxArm32Hfp/include/curl \
+	-Ibuild/kotlinxtras/openssl/linuxArm32Hfp/include/ \
+	-I/usr/local/kotlinxtras/libs/curl/linuxArm32Hfp/include/curl \
+	-I/usr/local/kotlinxtras/libs/openssl/linuxArm32Hfp/include/ 
+linkerOpts.linux_arm32_hfp = -Lbuild/kotlinxtras/curl/linuxArm32Hfp/lib \
+	-Lbuild/kotlinxtras/openssl/linuxArm32Hfp/lib \
+	-L/usr/local/kotlinxtras/libs/curl/linuxArm32Hfp/lib \
+	-L/usr/local/kotlinxtras/libs/openssl/linuxArm32Hfp/lib 
+libraryPaths.linux_arm32_hfp = build/kotlinxtras/curl/linuxArm32Hfp/lib \
+	build/kotlinxtras/openssl/linuxArm32Hfp/lib \
+	/usr/local/kotlinxtras/libs/curl/linuxArm32Hfp/lib \
+	/usr/local/kotlinxtras/libs/openssl/linuxArm32Hfp/lib 
 
-linkerOpts.linux =           -lcurl \
-                             -L/usr/lib64 \
-                             -L/usr/lib/x86_64-linux-gnu \
-                             -L/opt/local/lib \
-                             -L/usr/local/opt/curl/lib \
-                             -L/opt/homebrew/opt/curl/lib
+compilerOpts.linux_arm64 = -Ibuild/kotlinxtras/curl/linuxArm64/include/curl \
+	-Ibuild/kotlinxtras/openssl/linuxArm64/include/ \
+	-I/usr/local/kotlinxtras/libs/curl/linuxArm64/include/curl \
+	-I/usr/local/kotlinxtras/libs/openssl/linuxArm64/include/ 
+linkerOpts.linux_arm64 = -Lbuild/kotlinxtras/curl/linuxArm64/lib \
+	-Lbuild/kotlinxtras/openssl/linuxArm64/lib \
+	-L/usr/local/kotlinxtras/libs/curl/linuxArm64/lib \
+	-L/usr/local/kotlinxtras/libs/openssl/linuxArm64/lib 
+libraryPaths.linux_arm64 = build/kotlinxtras/curl/linuxArm64/lib \
+	build/kotlinxtras/openssl/linuxArm64/lib \
+	/usr/local/kotlinxtras/libs/curl/linuxArm64/lib \
+	/usr/local/kotlinxtras/libs/openssl/linuxArm64/lib 
 
-compilerOpts.linux =         -I/usr/include/curl \
-                             -I/usr/include/x86_64-linux-gnu/curl \
-                             -I/opt/homebrew/opt/curl/include/curl
+compilerOpts.linux_x64 = -Ibuild/kotlinxtras/curl/linuxX64/include/curl \
+	-Ibuild/kotlinxtras/openssl/linuxX64/include/ \
+	-I/usr/local/kotlinxtras/libs/curl/linuxX64/include/curl \
+	-I/usr/local/kotlinxtras/libs/openssl/linuxX64/include/ 
+linkerOpts.linux_x64 = -Lbuild/kotlinxtras/curl/linuxX64/lib \
+	-Lbuild/kotlinxtras/openssl/linuxX64/lib \
+	-L/usr/local/kotlinxtras/libs/curl/linuxX64/lib \
+	-L/usr/local/kotlinxtras/libs/openssl/linuxX64/lib 
+libraryPaths.linux_x64 = build/kotlinxtras/curl/linuxX64/lib \
+	build/kotlinxtras/openssl/linuxX64/lib \
+	/usr/local/kotlinxtras/libs/curl/linuxX64/lib \
+	/usr/local/kotlinxtras/libs/openssl/linuxX64/lib 
 
-linkerOpts.mingw_x64 =       -lcurl \
-                             -L/usr/lib64 \
-                             -L/usr/lib/x86_64-linux-gnu \
-                             -L/opt/local/lib \
-                             -L/usr/local/opt/curl/lib \
-                             -L/opt/homebrew/opt/curl/lib \
-                             -LC:/msys64/mingw64/lib \
-                             -LC:/Tools/msys64/mingw64/lib \
-                             -LC:/Tools/msys2/mingw64/lib
+compilerOpts.macos_arm64 = -Ibuild/kotlinxtras/curl/macosArm64/include/curl \
+	-Ibuild/kotlinxtras/openssl/macosArm64/include/ \
+	-I/usr/local/kotlinxtras/libs/curl/macosArm64/include/curl \
+	-I/usr/local/kotlinxtras/libs/openssl/macosArm64/include/ 
+linkerOpts.macos_arm64 = -Lbuild/kotlinxtras/curl/macosArm64/lib \
+	-Lbuild/kotlinxtras/openssl/macosArm64/lib \
+	-L/usr/local/kotlinxtras/libs/curl/macosArm64/lib \
+	-L/usr/local/kotlinxtras/libs/openssl/macosArm64/lib 
+libraryPaths.macos_arm64 = build/kotlinxtras/curl/macosArm64/lib \
+	build/kotlinxtras/openssl/macosArm64/lib \
+	/usr/local/kotlinxtras/libs/curl/macosArm64/lib \
+	/usr/local/kotlinxtras/libs/openssl/macosArm64/lib 
 
-compilerOpts.mingw_x64 =     -I/usr/include/curl \
-                             -I/usr/include/x86_64-linux-gnu/curl \
-                             -I/opt/homebrew/opt/curl/include/curl
+compilerOpts.macos_x64 = -Ibuild/kotlinxtras/curl/macosX64/include/curl \
+	-Ibuild/kotlinxtras/openssl/macosX64/include/ \
+	-I/usr/local/kotlinxtras/libs/curl/macosX64/include/curl \
+	-I/usr/local/kotlinxtras/libs/openssl/macosX64/include/ 
+linkerOpts.macos_x64 = -Lbuild/kotlinxtras/curl/macosX64/lib \
+	-Lbuild/kotlinxtras/openssl/macosX64/lib \
+	-L/usr/local/kotlinxtras/libs/curl/macosX64/lib \
+	-L/usr/local/kotlinxtras/libs/openssl/macosX64/lib 
+libraryPaths.macos_x64 = build/kotlinxtras/curl/macosX64/lib \
+	build/kotlinxtras/openssl/macosX64/lib \
+	/usr/local/kotlinxtras/libs/curl/macosX64/lib \
+	/usr/local/kotlinxtras/libs/openssl/macosX64/lib 
+
+compilerOpts.mingw_x64 = -Ibuild/kotlinxtras/curl/mingwX64/include/curl \
+	-Ibuild/kotlinxtras/openssl/mingwX64/include/ \
+	-I/usr/local/kotlinxtras/libs/curl/mingwX64/include/curl \
+	-I/usr/local/kotlinxtras/libs/openssl/mingwX64/include/ 
+linkerOpts.mingw_x64 = -Lbuild/kotlinxtras/curl/mingwX64/lib \
+	-Lbuild/kotlinxtras/openssl/mingwX64/lib \
+	-L/usr/local/kotlinxtras/libs/curl/mingwX64/lib \
+	-L/usr/local/kotlinxtras/libs/openssl/mingwX64/lib 
+libraryPaths.mingw_x64 = build/kotlinxtras/curl/mingwX64/lib \
+	build/kotlinxtras/openssl/mingwX64/lib \
+	/usr/local/kotlinxtras/libs/curl/mingwX64/lib \
+	/usr/local/kotlinxtras/libs/openssl/mingwX64/lib 
+
