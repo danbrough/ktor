@@ -13,12 +13,13 @@ val Project.files: Array<File> get() = project.projectDir.listFiles() ?: emptyAr
 val Project.hasCommon: Boolean get() = files.any { it.name == "common" }
 val Project.hasJvmAndNix: Boolean get() = hasCommon || files.any { it.name == "jvmAndNix" }
 val Project.hasPosix: Boolean get() = hasCommon || files.any { it.name == "posix" }
+val Project.hasAndroidPosix: Boolean get() = hasCommon || files.any { it.name == "androidPosix" }
 val Project.hasDesktop: Boolean get() = hasPosix || files.any { it.name == "desktop" }
 val Project.hasNix: Boolean get() = hasPosix || hasJvmAndNix || files.any { it.name == "nix" }
 val Project.hasDarwin: Boolean get() = hasNix || files.any { it.name == "darwin" }
 val Project.hasJs: Boolean get() = hasCommon || files.any { it.name == "js" }
 val Project.hasJvm: Boolean get() = hasCommon || hasJvmAndNix || files.any { it.name == "jvm" }
-val Project.hasNative: Boolean get() = hasCommon || hasNix || hasPosix || hasDarwin || hasDesktop
+val Project.hasNative: Boolean get() = hasCommon || hasNix || hasPosix || hasDarwin || hasDesktop || hasAndroidPosix
 
 fun Project.configureTargets() {
     configureCommon()
@@ -39,14 +40,20 @@ fun Project.configureTargets() {
         if (hasPosix || hasDarwin) extra.set("hasNative", true)
 
         sourceSets {
-            if (hasPosix) {
-                val posixMain by creating
-                val posixTest by creating
-            }
+
 
             if (hasNix) {
                 val nixMain by creating
                 val nixTest by creating
+            }
+
+            if (hasAndroidPosix){
+                val androidPosixMain by creating
+            }
+
+            if (hasPosix) {
+                val posixMain by creating
+                val posixTest by creating
             }
 
             if (hasDarwin) {
@@ -91,7 +98,16 @@ fun Project.configureTargets() {
                 }
             }
 
-            if (hasPosix) {
+            if (hasAndroidPosix) {
+                println("ADDING ANDROID POSIX MAIN SRC to ${this@configureTargets.name}")
+                val androidPosixMain by getting {
+                    findByName("commonMain")?.let { dependsOn(it) }
+                }
+
+                androidNativeTargets().forEach {
+                    getByName("${it}Main").dependsOn(androidPosixMain)
+                }
+            } else if (hasPosix) {
                 val posixMain by getting {
                     findByName("commonMain")?.let { dependsOn(it) }
                 }
@@ -105,6 +121,8 @@ fun Project.configureTargets() {
                     getByName("${it}Test").dependsOn(posixTest)
                 }
             }
+
+
 
             if (hasNix) {
                 val nixMain by getting {
@@ -170,7 +188,7 @@ fun Project.configureTargets() {
 
             if (hasDesktop) {
                 val desktopMain by getting {
-                    findByName("posixMain")?.let { dependsOn(it) }
+                    findByName("posixNameMain")?.let { dependsOn(it) }
                 }
 
                 val desktopTest by getting

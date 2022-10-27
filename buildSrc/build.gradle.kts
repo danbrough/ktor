@@ -23,7 +23,7 @@ sourceSets.main {
 }
 
 dependencies {
-    implementation(kotlin("gradle-plugin", "1.6.21"))
+    implementation(kotlin("gradle-plugin", "1.7.20"))
     implementation(kotlin("serialization", "1.6.21"))
 
     val ktlint_version = libs.versions.ktlint.version.get()
