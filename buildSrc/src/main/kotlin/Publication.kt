@@ -26,7 +26,7 @@ fun isAvailableForPublication(publication: Publication): Boolean {
         "kotlinMultiplatform"
     )
     result = result || name in jvmAndCommon
-    result = result || (HOST_NAME == "linux" && name == "linuxX64")
+
     result = result || (HOST_NAME == "windows" && name == "mingwX64")
     val macPublications = setOf(
         "iosX64",
@@ -48,6 +48,8 @@ fun isAvailableForPublication(publication: Publication): Boolean {
         "macosArm64"
     )
 
+    val linuxPublications = setOf("linuxX64", "linuxArm64", "linuxArm32Hfp")
+    result = result || (HOST_NAME == "linux" && name in linuxPublications)
     result = result || (HOST_NAME == "macos" && name in macPublications)
 
     return result
@@ -68,7 +70,7 @@ fun Project.configurePublication() {
     val repositoryId: String? = System.getenv("REPOSITORY_ID")
     val publishingUrl: String? = if (repositoryId?.isNotBlank() == true) {
         println("Set publishing to repository $repositoryId")
-        "https://oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
+        "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
     } else {
         System.getenv("PUBLISHING_URL")
     }
@@ -95,9 +97,10 @@ fun Project.configurePublication() {
                 }
             }
             maven {
-                name = "testLocal"
-                setUrl("$rootProject.buildDir/m2")
+                name = "M2"
+                setUrl(rootProject.buildDir.resolve("../../../build/m2"))
             }
+
         }
 
         publications.forEach {
@@ -167,25 +170,28 @@ fun Project.configurePublication() {
     if (signingKey != null && signingKey != "") {
         extra["signing.gnupg.keyName"] = signingKey
         extra["signing.gnupg.passphrase"] = signingKeyPassphrase
+        if (project.hasProperty("signPublications")) {
 
-        apply(plugin = "signing")
+            apply(plugin = "signing")
 
-        the<SigningExtension>().apply {
-            useGpgCmd()
+            the<SigningExtension>().apply {
+                //useGpgCmd()
 
-            sign(the<PublishingExtension>().publications)
-        }
-
-        val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
-
-        tasks.withType<Sign> {
-            doFirst {
-                gpgAgentLock.lock()
+                sign(the<PublishingExtension>().publications)
             }
 
-            doLast {
-                gpgAgentLock.unlock()
-            }
+//            val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
+//
+//            tasks.withType<Sign> {
+//                doFirst {
+//                    gpgAgentLock.lock()
+//                }
+//
+//                doLast {
+//                    gpgAgentLock.unlock()
+//                }
+//            }
         }
     }
 }
+

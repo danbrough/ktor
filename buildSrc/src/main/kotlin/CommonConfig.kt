@@ -11,7 +11,7 @@ fun Project.configureCommon() {
         sourceSets {
             val commonMain by getting {
                 dependencies {
-                    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
+                    api("org.danbrough.kotlinx:kotlinx-coroutines-core:$coroutines_version")
                 }
             }
 

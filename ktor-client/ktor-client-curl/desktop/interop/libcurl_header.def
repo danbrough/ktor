@@ -1,0 +1,8 @@
+package = libcurl
+headers = curl.h
+headersFilter = *
+linkerOpts =  -lz -lssl -lcrypto -lcurl
+
+linkerOpts.linux =      -lssl -lcrypto -lcurl
+linkerOpts.android =      -lssl -lcrypto -lcurl
+linkerOpts.macos  =      -lssl -lcrypto -lcurl
