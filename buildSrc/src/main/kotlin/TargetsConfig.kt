@@ -13,12 +13,13 @@ val Project.files: Array<File> get() = project.projectDir.listFiles() ?: emptyAr
 val Project.hasCommon: Boolean get() = files.any { it.name == "common" }
 val Project.hasJvmAndNix: Boolean get() = hasCommon || files.any { it.name == "jvmAndNix" }
 val Project.hasPosix: Boolean get() = hasCommon || files.any { it.name == "posix" }
-val Project.hasDesktop: Boolean get() = hasPosix || files.any { it.name == "desktop" }
-val Project.hasNix: Boolean get() = hasPosix || hasJvmAndNix || files.any { it.name == "nix" }
+val Project.hasPosixAndroid: Boolean get() = hasCommon || files.any { it.name == "posixAndroid" }
+val Project.hasDesktop: Boolean get() = hasPosix || hasPosixAndroid || files.any { it.name == "desktop" }
+val Project.hasNix: Boolean get() = hasPosix || hasPosixAndroid || hasJvmAndNix || files.any { it.name == "nix" }
 val Project.hasDarwin: Boolean get() = hasNix || files.any { it.name == "darwin" }
 val Project.hasJs: Boolean get() = hasCommon || files.any { it.name == "js" }
 val Project.hasJvm: Boolean get() = hasCommon || hasJvmAndNix || files.any { it.name == "jvm" }
-val Project.hasNative: Boolean get() = hasCommon || hasNix || hasPosix || hasDarwin || hasDesktop
+val Project.hasNative: Boolean get() = hasCommon || hasNix || hasPosix || hasPosixAndroid || hasDarwin || hasDesktop
 
 fun Project.configureTargets() {
     configureCommon()
@@ -36,9 +37,15 @@ fun Project.configureTargets() {
             configureJs()
         }
 
-        if (hasPosix || hasDarwin) extra.set("hasNative", true)
+        if (hasPosix || hasPosixAndroid || hasDarwin) extra.set("hasNative", true)
 
         sourceSets {
+
+
+            if (hasPosixAndroid) {
+                val posixAndroidMain by creating
+                val posixAndroidTest by creating
+            }
             if (hasPosix) {
                 val posixMain by creating
                 val posixTest by creating
@@ -91,7 +98,22 @@ fun Project.configureTargets() {
                 }
             }
 
-            if (hasPosix) {
+            if (hasPosixAndroid) {
+                val posixAndroidMain by getting {
+                    findByName("commonMain")?.let { dependsOn(it) }
+                }
+
+                val posixAndroidTest by getting {
+                    findByName("commonTest")?.let { dependsOn(it) }
+                }
+
+                androidNativeTargets().forEach {
+                    getByName("${it}Main").dependsOn(posixAndroidMain)
+                    getByName("${it}Test").dependsOn(posixAndroidTest)
+                }
+            }
+
+            if(hasPosix) {
                 val posixMain by getting {
                     findByName("commonMain")?.let { dependsOn(it) }
                 }

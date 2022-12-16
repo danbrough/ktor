@@ -79,7 +79,7 @@ fun Project.desktopTargets(): List<String> = fastOr {
 fun Project.androidNativeTargets(): List<String> = fastOr {
     with(kotlin) {
         listOf(
-            androidNativeArm32(),
+            androidNativeArm64(),
         ).map { it.name }
     }
 }

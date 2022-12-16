@@ -4,6 +4,7 @@
 
 pluginManagement {
     repositories {
+        maven("/usr/local/kotlinxtras/build/m2")
         mavenCentral()
         google()
         gradlePluginPortal()
