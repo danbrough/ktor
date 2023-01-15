@@ -29,6 +29,7 @@ buildscript {
         }
         repositories {
             mavenLocal()
+            maven("https://s01.oss.sonatype.org/content/groups/staging")
             maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         }
 
@@ -49,6 +50,7 @@ buildscript {
         mavenCentral()
         google()
         gradlePluginPortal()
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
     }
 }
@@ -98,7 +100,7 @@ plugins {
 }
 
 allprojects {
-    group = "io.ktor"
+    group = "org.danbrough.ktor"
     version = configuredVersion
     extra["hostManager"] = HostManager()
 
@@ -107,6 +109,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
         maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
     }
