@@ -4,7 +4,7 @@
 
 import org.gradle.api.*
 
-val Project.COMMON_JVM_ONLY get() = IDEA_ACTIVE && properties.get("ktor.ide.jvmAndCommonOnly") == "true"
+val Project.COMMON_JVM_ONLY get() = false //IDEA_ACTIVE && properties.get("ktor.ide.jvmAndCommonOnly") == "true"
 
 fun Project.fastOr(block: () -> List<String>): List<String> {
     if (COMMON_JVM_ONLY) return emptyList()
@@ -16,7 +16,8 @@ fun Project.posixTargets(): List<String> = fastOr {
 }
 
 fun Project.nixTargets(): List<String> = fastOr {
-    darwinTargets() + kotlin.linuxX64().name
+    darwinTargets() +  listOf(kotlin.linuxX64().name, kotlin.linuxArm64().name,kotlin.linuxArm32Hfp().name)
+
 }
 
 fun Project.darwinTargets(): List<String> = fastOr {
@@ -71,6 +72,8 @@ fun Project.desktopTargets(): List<String> = fastOr {
             macosX64(),
             macosArm64(),
             linuxX64(),
+            linuxArm32Hfp(),
+            linuxArm64(),
             mingwX64()
         ).map { it.name }
     }

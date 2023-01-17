@@ -26,7 +26,8 @@ fun isAvailableForPublication(publication: Publication): Boolean {
         "kotlinMultiplatform"
     )
     result = result || name in jvmAndCommon
-    result = result || (HOST_NAME == "linux" && name == "linuxX64")
+    val linuxPublications = setOf("linuxX64", "linuxArm64", "linuxArm32Hfp")
+    result = result || (HOST_NAME == "linux" && name in linuxPublications)
     result = result || (HOST_NAME == "windows" && name == "mingwX64")
     val macPublications = setOf(
         "iosX64",
@@ -62,10 +63,10 @@ fun Project.configurePublication() {
         onlyIf { isAvailableForPublication(publication) }
     }
 
-    val publishingUser: String? = System.getenv("PUBLISHING_USER")
-    val publishingPassword: String? = System.getenv("PUBLISHING_PASSWORD")
+    val publishingUser: String? = System.getenv("SONATYPE_USER")
+    val publishingPassword: String? = System.getenv("SONATYPE_PASSWORD")
 
-    val repositoryId: String? = System.getenv("REPOSITORY_ID")
+    val repositoryId: String? = System.getenv("SONATYPE_REPO_ID")
     val publishingUrl: String? = if (repositoryId?.isNotBlank() == true) {
         println("Set publishing to repository $repositoryId")
         "https://oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
@@ -171,7 +172,7 @@ fun Project.configurePublication() {
         apply(plugin = "signing")
 
         the<SigningExtension>().apply {
-            useGpgCmd()
+            //useGpgCmd()
 
             sign(the<PublishingExtension>().publications)
         }
