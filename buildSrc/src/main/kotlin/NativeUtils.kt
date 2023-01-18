@@ -15,8 +15,18 @@ fun Project.posixTargets(): List<String> = fastOr {
     nixTargets() + windowsTargets()
 }
 
+
+fun Project.linuxTargets(): List<String> = fastOr {
+    with(kotlin) {
+        listOf(
+            linuxX64(),
+            linuxArm32Hfp(),
+            linuxArm64(),
+        ).map { it.name }
+    }
+}
 fun Project.nixTargets(): List<String> = fastOr {
-    darwinTargets() +  listOf(kotlin.linuxX64().name, kotlin.linuxArm64().name,kotlin.linuxArm32Hfp().name)
+    darwinTargets() +  linuxTargets()
 
 }
 

@@ -54,6 +54,7 @@ fun isAvailableForPublication(publication: Publication): Boolean {
     return result
 }
 
+
 fun Project.configurePublication() {
     if (COMMON_JVM_ONLY) return
 
@@ -66,13 +67,11 @@ fun Project.configurePublication() {
     val publishingUser: String? = System.getenv("SONATYPE_USER")
     val publishingPassword: String? = System.getenv("SONATYPE_PASSWORD")
 
-    val repositoryId: String? = System.getenv("SONATYPE_REPO_ID")
-    val publishingUrl: String? = if (repositoryId?.isNotBlank() == true) {
-        println("Set publishing to repository $repositoryId")
-        "https://oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
-    } else {
-        System.getenv("PUBLISHING_URL")
+    val repositoryId: String = System.getenv("SONATYPE_REPO_ID") ?: let {
+        println("SONATYPE_REPO_ID not set")
+        "SONATYPE_REPO_ID-NOT-SET"
     }
+    val publishingUrl: String? = "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
 
     val publishLocal: Boolean by rootProject.extra
     val globalM2: String by rootProject.extra
