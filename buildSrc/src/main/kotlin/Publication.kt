@@ -67,10 +67,8 @@ fun Project.configurePublication() {
     val publishingUser: String? = System.getenv("SONATYPE_USER")
     val publishingPassword: String? = System.getenv("SONATYPE_PASSWORD")
 
-    val repositoryId: String = System.getenv("SONATYPE_REPO_ID") ?: let {
-        println("SONATYPE_REPO_ID not set")
-        "SONATYPE_REPO_ID-NOT-SET"
-    }
+    val repositoryId: String = System.getenv("SONATYPE_REPO_ID") ?: ""
+
     val publishingUrl: String? = "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
 
     val publishLocal: Boolean by rootProject.extra
@@ -97,6 +95,11 @@ fun Project.configurePublication() {
             maven {
                 name = "testLocal"
                 setUrl("$rootProject.buildDir/m2")
+            }
+
+            maven {
+                name = "xtras"
+                setUrl("/usr/local/kotlinxtras/build/xtras/maven")
             }
         }
 
@@ -161,12 +164,11 @@ fun Project.configurePublication() {
     val publishToMavenLocal = tasks.getByName("publishToMavenLocal")
     tasks.getByName("publish").dependsOn(publishToMavenLocal)
 
-    val signingKey = System.getenv("SIGN_KEY_ID")
-    val signingKeyPassphrase = System.getenv("SIGN_KEY_PASSPHRASE")
+    val signPublications = System.getenv("signPublications")
 
-    if (signingKey != null && signingKey != "") {
-        extra["signing.gnupg.keyName"] = signingKey
-        extra["signing.gnupg.passphrase"] = signingKeyPassphrase
+
+    if (signPublications != null) {
+
 
         apply(plugin = "signing")
 
@@ -174,18 +176,6 @@ fun Project.configurePublication() {
             //useGpgCmd()
 
             sign(the<PublishingExtension>().publications)
-        }
-
-        val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
-
-        tasks.withType<Sign> {
-            doFirst {
-                gpgAgentLock.lock()
-            }
-
-            doLast {
-                gpgAgentLock.unlock()
-            }
         }
     }
 }
