@@ -82,6 +82,7 @@ fun Project.configurePublication() {
     the<PublishingExtension>().apply {
         repositories {
             maven {
+                name = "SonaType"
                 if (publishLocal) {
                     setUrl(globalM2)
                 } else {
@@ -164,7 +165,7 @@ fun Project.configurePublication() {
     val publishToMavenLocal = tasks.getByName("publishToMavenLocal")
     tasks.getByName("publish").dependsOn(publishToMavenLocal)
 
-    val signPublications = System.getenv("signPublications")
+    val signPublications = hasProperty("signPublications")
 
 
     if (signPublications != null) {
