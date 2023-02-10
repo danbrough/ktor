@@ -6,7 +6,7 @@ kotlin {
     sourceSets {
         posixMain {
             dependencies {
-                //implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.coroutines.core)
                 implementation(project(":ktor-utils"))
             }
         }
