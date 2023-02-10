@@ -10,6 +10,7 @@ plugins {
 val buildSnapshotTrain = properties["build_snapshot_train"]?.toString()?.toBoolean() == true
 
 repositories {
+    maven("https://s01.oss.sonatype.org/content/groups/staging/")
     maven("https://plugins.gradle.org/m2")
     maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
 

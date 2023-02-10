@@ -33,7 +33,7 @@ fun Project.configureJvm() {
                     }
                     if (jdk > 7) {
                         api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-                        api("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version") {
+                        api("org.danbrough.kotlinx:kotlinx-coroutines-jdk8:$coroutines_version") {
                             exclude(module = "kotlin-stdlib")
                             exclude(module = "kotlin-stdlib-jvm")
                             exclude(module = "kotlin-stdlib-jdk8")
@@ -48,7 +48,7 @@ fun Project.configureJvm() {
             val jvmTest by getting {
                 dependencies {
                     implementation("junit:junit:$junit_version")
-                    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:$coroutines_version")
+                    implementation("org.danbrough.kotlinx:kotlinx-coroutines-debug:$coroutines_version")
                     implementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
                 }
             }

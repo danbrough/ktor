@@ -15,6 +15,7 @@ val Project.hasJvmAndNix: Boolean get() = hasCommon || files.any { it.name == "j
 val Project.hasPosix: Boolean get() = hasCommon || files.any { it.name == "posix" }
 val Project.hasDesktop: Boolean get() = hasPosix || files.any { it.name == "desktop" }
 val Project.hasNix: Boolean get() = hasPosix || hasJvmAndNix || files.any { it.name == "nix" }
+val Project.hasLinux: Boolean get() = hasCommon || files.any { it.name == "linux" }
 val Project.hasDarwin: Boolean get() = hasNix || files.any { it.name == "darwin" }
 val Project.hasWindows: Boolean get() = hasPosix || files.any { it.name == "windows" }
 val Project.hasJs: Boolean get() = hasCommon || files.any { it.name == "js" }
@@ -49,6 +50,11 @@ fun Project.configureTargets() {
                 val nixMain by creating
                 val nixTest by creating
             }
+
+            if (hasLinux) {
+                val linuxMain by creating
+            }
+
 
             if (hasDarwin) {
                 val darwinMain by creating
@@ -138,6 +144,13 @@ fun Project.configureTargets() {
                 nixTargets().forEach {
                     getByName("${it}Main").dependsOn(nixMain)
                     getByName("${it}Test").dependsOn(nixTest)
+                }
+            }
+
+            if (hasLinux) {
+                val linuxMain by getting
+                linuxTargets().forEach {
+                    getByName("${it}Main").dependsOn(linuxMain)
                 }
             }
 
