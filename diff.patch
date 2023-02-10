@@ -1,0 +1,240 @@
+
+diff --git a/gradle.properties b/gradle.properties
+index acb69b845..4b76c909c 100644
+--- a/gradle.properties
++++ b/gradle.properties
+@@ -32,7 +32,7 @@ kotlin.internal.mpp.hierarchicalStructureByDefault=true
+ 
+ kotlin_version=1.7.20
+ coroutines_version=1.6.4
+-atomicfu_version=0.18.5
++atomicfu_version=0.19.0a
+ slf4j_version=1.7.36
+ junit_version=4.13.2
+ logback_version=1.2.11
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+index a0c286038..90ebaf0c9 100644
+--- a/gradle/libs.versions.toml
++++ b/gradle/libs.versions.toml
+@@ -2,7 +2,7 @@
+ kotlin-version = "1.7.22"
+ kotlinx-html-version = "0.8.0"
+ coroutines-version = "1.6.4"
+-atomicfu-version = "0.18.5"
++atomicfu-version = "0.19.0a"
+ serialization-version = "1.4.1"
+ validator-version = "0.8.0"
+ ktlint-version = "3.10.0"
+@@ -63,20 +63,20 @@ kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", versi
+ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-version" }
+ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin-version" }
+ 
+-kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu-version" }
++kotlinx-atomicfu = { module = "org.danbrough.kotlinx:atomicfu", version.ref = "atomicfu-version" }
+ 
+-kotlinx-coroutines-debug = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-debug", version.ref = "coroutines-version" }
+-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-version" }
+-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines-version" }
+-kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines-version" }
+-kotlinx-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j", version.ref = "coroutines-version" }
++kotlinx-coroutines-debug = { module = "org.danbrough.kotlinx:kotlinx-coroutines-debug", version.ref = "coroutines-version" }
++kotlinx-coroutines-test = { module = "org.danbrough.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-version" }
++kotlinx-coroutines-core = { module = "org.danbrough.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines-version" }
++kotlinx-coroutines-jdk8 = { module = "org.danbrough.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines-version" }
++kotlinx-coroutines-slf4j = { module = "org.danbrough.kotlinx:kotlinx-coroutines-slf4j", version.ref = "coroutines-version" }
+ 
+-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization-version" }
+-kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-version" }
+-kotlinx-serialization-cbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "serialization-version" }
+-kotlinx-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "serialization-version" }
++kotlinx-serialization-core = { module = "org.danbrough.kotlinx:kotlinx-serialization-core", version.ref = "serialization-version" }
++kotlinx-serialization-json = { module = "org.danbrough.kotlinx:kotlinx-serialization-json", version.ref = "serialization-version" }
++kotlinx-serialization-cbor = { module = "org.danbrough.kotlinx:kotlinx-serialization-cbor", version.ref = "serialization-version" }
++kotlinx-serialization-protobuf = { module = "org.danbrough.kotlinx:kotlinx-serialization-protobuf", version.ref = "serialization-version" }
+ 
+-kotlinx-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlinx-html-version" }
++kotlinx-html = { module = "org.danbrough.kotlinx:kotlinx-html", version.ref = "kotlinx-html-version" }
+ 
+ netty-handler = { module = "io.netty:netty-handler", version.ref = "netty-version" }
+ netty-codec-http2 = { module = "io.netty:netty-codec-http2", version.ref = "netty-version" }
+diff --git a/ktor-client/ktor-client-curl/build.gradle.kts b/ktor-client/ktor-client-curl/build.gradle.kts
+index a0437ccf6..ee7150c42 100644
+--- a/ktor-client/ktor-client-curl/build.gradle.kts
++++ b/ktor-client/ktor-client-curl/build.gradle.kts
+@@ -13,19 +13,7 @@ val paths = if (HOST_NAME == "windows") {
+     )
+ } else {
+     listOf(
+-        "/opt/homebrew/opt/curl/include/curl",
+-        "/opt/local/include/curl",
+-        "/usr/local/include/curl",
+         "/usr/include/curl",
+-        "/usr/local/opt/curl/include/curl",
+-        "/usr/include/x86_64-linux-gnu/curl",
+-        "/usr/local/Cellar/curl/7.62.0/include/curl",
+-        "/usr/local/Cellar/curl/7.63.0/include/curl",
+-        "/usr/local/Cellar/curl/7.65.3/include/curl",
+-        "/usr/local/Cellar/curl/7.66.0/include/curl",
+-        "/usr/local/Cellar/curl/7.80.0/include/curl",
+-        "/usr/local/Cellar/curl/7.80.0_1/include/curl",
+-        "/usr/local/Cellar/curl/7.81.0/include/curl"
+     )
+ }
+ 
+@@ -36,7 +24,7 @@ plugins {
+ kotlin {
+     if (fastTarget()) return@kotlin
+ 
+-    createCInterop("libcurl", listOf("macosX64", "linuxX64", "mingwX64")) {
++    createCInterop("libcurl", listOf("macosX64", "linuxX64","linuxArm64","linuxArm32Hfp", "mingwX64")) {
+         defFile = File(projectDir, "desktop/interop/libcurl.def")
+         includeDirs.headerFilterOnly(paths)
+     }
+diff --git a/ktor-network/linuxX64/src/io/ktor/network/selector/SelectUtilsLinux.kt b/ktor-network/linux/src/io/ktor/network/selector/SelectUtilsLinux.kt
+similarity index 100%
+rename from ktor-network/linuxX64/src/io/ktor/network/selector/SelectUtilsLinux.kt
+rename to ktor-network/linux/src/io/ktor/network/selector/SelectUtilsLinux.kt
+diff --git a/ktor-network/linuxX64/src/io/ktor/network/util/SocketUtilsLinux.kt b/ktor-network/linux/src/io/ktor/network/util/SocketUtilsLinux.kt
+similarity index 100%
+rename from ktor-network/linuxX64/src/io/ktor/network/util/SocketUtilsLinux.kt
+rename to ktor-network/linux/src/io/ktor/network/util/SocketUtilsLinux.kt
+diff --git a/ktor-network/linuxX64/test/io/ktor/network/sockets/tests/TestUtilsLinux.kt b/ktor-network/linux/test/io/ktor/network/sockets/tests/TestUtilsLinux.kt
+similarity index 100%
+rename from ktor-network/linuxX64/test/io/ktor/network/sockets/tests/TestUtilsLinux.kt
+rename to ktor-network/linux/test/io/ktor/network/sockets/tests/TestUtilsLinux.kt
+diff --git a/ktor-test-dispatcher/build.gradle.kts b/ktor-test-dispatcher/build.gradle.kts
+index c9c8fc854..93f44004d 100644
+--- a/ktor-test-dispatcher/build.gradle.kts
++++ b/ktor-test-dispatcher/build.gradle.kts
+@@ -6,6 +6,7 @@ kotlin {
+     sourceSets {
+         posixMain {
+             dependencies {
++                implementation(libs.kotlinx.coroutines.core)
+                 implementation(project(":ktor-utils"))
+             }
+         }
+diff --git a/ktor-test-dispatcher/linuxArm32Hfp/src/TestLinuxX64.kt b/ktor-test-dispatcher/linuxArm32Hfp/src/TestLinuxX64.kt
+new file mode 100644
+index 000000000..75b406dec
+--- /dev/null
++++ b/ktor-test-dispatcher/linuxArm32Hfp/src/TestLinuxX64.kt
+@@ -0,0 +1,20 @@
++package io.ktor.test.dispatcher
++
++import kotlinx.coroutines.*
++import platform.posix.*
++import kotlin.coroutines.*
++
++/**
++ * Test runner for native suspend tests.
++ */
++public actual fun testSuspend(
++    context: CoroutineContext,
++    timeoutMillis: Long,
++    block: suspend CoroutineScope.() -> Unit
++) {
++    executeInWorker(timeoutMillis) {
++        runBlocking {
++            block()
++        }
++    }
++}
+diff --git a/ktor-test-dispatcher/linuxArm64/src/TestLinuxX64.kt b/ktor-test-dispatcher/linuxArm64/src/TestLinuxX64.kt
+new file mode 100644
+index 000000000..75b406dec
+--- /dev/null
++++ b/ktor-test-dispatcher/linuxArm64/src/TestLinuxX64.kt
+@@ -0,0 +1,20 @@
++package io.ktor.test.dispatcher
++
++import kotlinx.coroutines.*
++import platform.posix.*
++import kotlin.coroutines.*
++
++/**
++ * Test runner for native suspend tests.
++ */
++public actual fun testSuspend(
++    context: CoroutineContext,
++    timeoutMillis: Long,
++    block: suspend CoroutineScope.() -> Unit
++) {
++    executeInWorker(timeoutMillis) {
++        runBlocking {
++            block()
++        }
++    }
++}
+diff --git a/ktor-utils/linuxX64/src/io/ktor/util/ThreadInfoLinux.kt b/ktor-utils/linux/src/io/ktor/util/ThreadInfoLinux.kt
+similarity index 100%
+rename from ktor-utils/linuxX64/src/io/ktor/util/ThreadInfoLinux.kt
+rename to ktor-utils/linux/src/io/ktor/util/ThreadInfoLinux.kt
+diff --git a/mac_targets.txt b/mac_targets.txt
+new file mode 100644
+index 000000000..740739eea
+--- /dev/null
++++ b/mac_targets.txt
+@@ -0,0 +1,14 @@
++publishIosArm32PublicationToSonaTypeRepository
++publishIosArm64PublicationToSonaTypeRepository
++publishIosSimulatorArm64PublicationToSonaTypeRepository
++publishIosX64PublicationToSonaTypeRepository
++publishMacosArm64PublicationToSonaTypeRepository
++publishMacosX64PublicationToSonaTypeRepository
++#publishTvosArm64PublicationToSonaTypeRepository
++#publishTvosSimulatorArm64PublicationToSonaTypeRepository
++#publishTvosX64PublicationToSonaTypeRepository
++#publishWatchosArm32PublicationToSonaTypeRepository
++#publishWatchosArm64PublicationToSonaTypeRepository
++#publishWatchosSimulatorArm64PublicationToSonaTypeRepository
++#publishWatchosX64PublicationToSonaTypeRepository
++#publishWatchosX86PublicationToSonaTypeRepository
+diff --git a/publish.sh b/publish.sh
+new file mode 100755
+index 000000000..ca52608a1
+--- /dev/null
++++ b/publish.sh
+@@ -0,0 +1,21 @@
++#!/bin/bash
++
++cd $(dirname "$0")
++
++export PUBLISHING_URL="https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
++export PUBLISHING_USER="danbrough"
++
++if [ -z "$PUBLISHING_PASSWORD" ]; then
++    echo PUBLISHING_PASSWORD not set
++    exit 1
++fi
++
++if [ "$(uname)" = "Darwin" ]; then
++  #need JAVA_HOME to be set
++  export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/
++  ./gradlew -PsignPublications `cat mac_targets.txt | sed -e '/^#/d'`
++  exit 0
++fi
++
++./gradlew -PsignPublications  publishAllPublicationsToSonaTypeRepository
++
+diff --git a/settings.gradle.kts b/settings.gradle.kts
+index 4f4ef1c32..096618e88 100644
+--- a/settings.gradle.kts
++++ b/settings.gradle.kts
+@@ -4,6 +4,7 @@
+ 
+ pluginManagement {
+     repositories {
++	mavenLocal()
+         mavenCentral()
+         google()
+         gradlePluginPortal()
+@@ -11,7 +12,7 @@ pluginManagement {
+     resolutionStrategy {
+         eachPlugin {
+             if (requested.id.id == "kotlinx-atomicfu") {
+-                useModule("org.jetbrains.kotlinx:atomicfu-gradle-plugin:${requested.version}")
++                useModule("org.danbrough.kotlinx:atomicfu-gradle-plugin:${requested.version}")
+             }
+         }
+     }
