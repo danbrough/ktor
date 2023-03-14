@@ -11,22 +11,6 @@ val paths = if (HOST_NAME == "windows") {
         "C:/Tools/msys64/mingw64/include/curl",
         "C:/Tools/msys2/mingw64/include/curl"
     )
-} else {
-    listOf(
-        "/opt/homebrew/opt/curl/include/curl",
-        "/opt/local/include/curl",
-        "/usr/local/include/curl",
-        "/usr/include/curl",
-        "/usr/local/opt/curl/include/curl",
-        "/usr/include/x86_64-linux-gnu/curl",
-        "/usr/local/Cellar/curl/7.62.0/include/curl",
-        "/usr/local/Cellar/curl/7.63.0/include/curl",
-        "/usr/local/Cellar/curl/7.65.3/include/curl",
-        "/usr/local/Cellar/curl/7.66.0/include/curl",
-        "/usr/local/Cellar/curl/7.80.0/include/curl",
-        "/usr/local/Cellar/curl/7.80.0_1/include/curl",
-        "/usr/local/Cellar/curl/7.81.0/include/curl"
-    )
 }
 
 plugins {
@@ -36,7 +20,7 @@ plugins {
 kotlin {
     if (fastTarget()) return@kotlin
 
-    createCInterop("libcurl", listOf("macosX64", "linuxX64", "mingwX64")) {
+    createCInterop("libcurl", listOf("macosX64", "linuxX64","linuxArm64","linuxArm32Hfp", "mingwX64")) {
         defFile = File(projectDir, "desktop/interop/libcurl.def")
         includeDirs.headerFilterOnly(paths)
     }

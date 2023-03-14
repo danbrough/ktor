@@ -172,7 +172,7 @@ fun Project.configurePublication() {
      if (signPublications != null) {
 
 
-        extra["signing.gnupg.keyName"] = signingKey
+        //extra["signing.gnupg.keyName"] = signingKey
     //    extra["signing.gnupg.passphrase"] = signingKeyPassphrase
 
         apply(plugin = "signing")
