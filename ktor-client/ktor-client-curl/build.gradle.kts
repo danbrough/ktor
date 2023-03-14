@@ -11,7 +11,8 @@ val paths = if (HOST_NAME == "windows") {
         "C:/Tools/msys64/mingw64/include/curl",
         "C:/Tools/msys2/mingw64/include/curl"
     )
-}
+} else emptyList()
+
 
 plugins {
     id("kotlinx-serialization")
