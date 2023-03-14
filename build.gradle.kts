@@ -29,6 +29,7 @@ buildscript {
         }
         repositories {
             mavenLocal()
+            maven("https://s01.oss.sonatype.org/content/groups/staging")
             maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         }
 
@@ -46,6 +47,7 @@ buildscript {
 
     repositories {
         mavenLocal()
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenCentral()
         google()
         gradlePluginPortal()
@@ -93,12 +95,12 @@ apply(from = "gradle/compatibility.gradle")
 plugins {
     id("org.jetbrains.dokka") version "1.7.20" apply false
     id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.12.1"
-    id("kotlinx-atomicfu") version "0.18.5" apply false
+    id("kotlinx-atomicfu") version "0.19.0a" apply false
     id("com.osacky.doctor") version "0.8.1"
 }
 
 allprojects {
-    group = "io.ktor"
+    group = "org.danbrough.ktor"
     version = configuredVersion
     extra["hostManager"] = HostManager()
 
@@ -106,6 +108,8 @@ allprojects {
 
     repositories {
         mavenLocal()
+        maven("/usr/local/kotlinxtras/build/m2")
+        maven("https://s01.oss.sonatype.org/content/groups/staging")
         mavenCentral()
         maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
         maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")

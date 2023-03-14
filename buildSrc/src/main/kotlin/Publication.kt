@@ -26,7 +26,8 @@ fun isAvailableForPublication(publication: Publication): Boolean {
         "kotlinMultiplatform"
     )
     result = result || name in jvmAndCommon
-    result = result || (HOST_NAME == "linux" && name == "linuxX64")
+    val linuxPublications = setOf("linuxX64", "linuxArm64", "linuxArm32Hfp")
+    result = result || (HOST_NAME == "linux" && name in linuxPublications)
     result = result || (HOST_NAME == "windows" && name == "mingwX64")
     val macPublications = setOf(
         "iosX64",
@@ -62,16 +63,19 @@ fun Project.configurePublication() {
         onlyIf { isAvailableForPublication(publication) }
     }
 
-    val publishingUser: String? = System.getenv("PUBLISHING_USER")
-    val publishingPassword: String? = System.getenv("PUBLISHING_PASSWORD")
+    val publishingUser: String? = System.getenv("SONATYPE_USER")
+    val publishingPassword: String? = System.getenv("SONATYPE_PASSWORD")
 
-    val repositoryId: String? = System.getenv("REPOSITORY_ID")
+    /*val repositoryId: String? = System.getenv("REPOSITORY_ID")
     val publishingUrl: String? = if (repositoryId?.isNotBlank() == true) {
         println("Set publishing to repository $repositoryId")
         "https://oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
     } else {
         System.getenv("PUBLISHING_URL")
-    }
+    }*/
+
+    val repositoryId: String = System.getenv("SONATYPE_REPO_ID") ?: ""
+    val publishingUrl: String? = "https://s01.oss.sonatype.org/service/local/staging/deployByRepositoryId/$repositoryId"
 
     val publishLocal: Boolean by rootProject.extra
     val globalM2: String by rootProject.extra
@@ -84,6 +88,7 @@ fun Project.configurePublication() {
     the<PublishingExtension>().apply {
         repositories {
             maven {
+                name = "SonaType"
                 if (publishLocal) {
                     setUrl(globalM2)
                 } else {
@@ -95,8 +100,8 @@ fun Project.configurePublication() {
                 }
             }
             maven {
-                name = "testLocal"
-                setUrl("$rootProject.buildDir/m2")
+                name = "xtras"
+                setUrl("/usr/local/kotlinxtras/build/xtras/maven")
             }
         }
 
@@ -161,31 +166,23 @@ fun Project.configurePublication() {
     val publishToMavenLocal = tasks.getByName("publishToMavenLocal")
     tasks.getByName("publish").dependsOn(publishToMavenLocal)
 
-    val signingKey = System.getenv("SIGN_KEY_ID")
-    val signingKeyPassphrase = System.getenv("SIGN_KEY_PASSPHRASE")
+    /*val signingKey = System.getenv("SIGN_KEY_ID")
+    val signingKeyPassphrase = System.getenv("SIGN_KEY_PASSPHRASE")*/
+       val signPublications = hasProperty("signPublications")
+     if (signPublications != null) {
 
-    if (signingKey != null && signingKey != "") {
+
         extra["signing.gnupg.keyName"] = signingKey
-        extra["signing.gnupg.passphrase"] = signingKeyPassphrase
+    //    extra["signing.gnupg.passphrase"] = signingKeyPassphrase
 
         apply(plugin = "signing")
 
         the<SigningExtension>().apply {
-            useGpgCmd()
+      //      useGpgCmd()
 
             sign(the<PublishingExtension>().publications)
         }
 
-        val gpgAgentLock: ReentrantLock by rootProject.extra { ReentrantLock() }
 
-        tasks.withType<Sign> {
-            doFirst {
-                gpgAgentLock.lock()
-            }
-
-            doLast {
-                gpgAgentLock.unlock()
-            }
-        }
     }
 }
